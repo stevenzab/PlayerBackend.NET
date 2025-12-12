@@ -1,10 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
-using PlayerBack.Application.Services.Player;
+using PlayerBack.Application.Services.PlayerNs;
 
-namespace PlayerBack.Controllers
+namespace PlayerBack.Api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class PlayerController : ControllerBase
     {
         private readonly IPlayerService playerService;
@@ -14,16 +14,15 @@ namespace PlayerBack.Controllers
             this.playerService = playerService;
         }
 
-        [HttpGet(Name = "GetWeatherForecast")]
-        public IEnumerable<WeatherForecast> Get()
+        [HttpGet("Players")]
+        public async Task<IActionResult> GetPlayersAsync(CancellationToken cancellationToken)
         {
-            return Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Date = DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                //Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            })
-            .ToArray();
+            var result = await playerService.GetPlayersAsync(cancellationToken);
+
+            if (result == null || result.Count == 0)
+                return NotFound();
+
+            return Ok(result);
         }
     }
 }
