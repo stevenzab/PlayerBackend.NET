@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
-using PlayerBack.Infrastructure.Repository;
-using PlayerBack.Infrastructure.Settings;
+using PlayerBack.Domain.Settings;
+using PlayerBack.Infrastructure.Common;
 
 namespace PlayerBack.Infrastructure
 {
@@ -21,7 +21,7 @@ namespace PlayerBack.Infrastructure
             var mongoDatabase = mongoClient.GetDatabase(mongodbSettings.DatabaseName);
 
             services.AddSingleton(mongoDatabase);
-            services.AddScoped<IPlayerRepository, PlayerRepository>();
+            services.AddScoped<IBaseRepository, BaseRepository>();
             return services;
         }
     }
