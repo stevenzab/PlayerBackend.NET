@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using MongoDB.Driver;
 using PlayerBack.Domain.Settings;
 using PlayerBack.Infrastructure.Common;
+using PlayerBack.Infrastructure.Seeding;
 
 namespace PlayerBack.Infrastructure
 {
@@ -22,7 +23,20 @@ namespace PlayerBack.Infrastructure
 
             services.AddSingleton(mongoDatabase);
             services.AddScoped<IBaseRepository, BaseRepository>();
+            services.AddScoped<IDbSeeder, PlayerDbSeeder>();
             return services;
+        }
+    }
+
+    public static class DbSeederExtensions
+    {
+        public static async Task SeedDatabaseAsync(this IServiceProvider serviceProvider)
+        {
+            using var scope = serviceProvider.CreateScope();
+            var seeder = scope.ServiceProvider.GetRequiredService<IDbSeeder>();
+
+            if (!await seeder.HasDataAsync())
+                await seeder.SeedAsync();
         }
     }
 }
