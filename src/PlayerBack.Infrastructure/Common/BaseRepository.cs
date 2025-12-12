@@ -1,23 +1,22 @@
 ﻿using MongoDB.Driver;
-using PlayerBack.Infrastructure.Models;
+using PlayerBack.Domain.Models;
 
 namespace PlayerBack.Infrastructure.Common
 {
-    public class BaseRepository<T> : IBaseRepository<T> where T : RepositoryCollection
+    public class BaseRepository : IBaseRepository
     {
         private readonly IMongoDatabase database;
-        private readonly IMongoCollection<T> collection;
 
         public BaseRepository(IMongoDatabase database)
         {
             this.database = database;
-            collection = database.GetCollection<T>(typeof(T).Name);
         }
 
-        public IQueryable<T> AsQueryable() => database.GetCollection<T>(typeof(T).Name).AsQueryable();
+        public IQueryable<T> AsQueryable<T>() => database.GetCollection<T>(typeof(T).Name).AsQueryable();
 
-        public async Task AddAsync(T entity)
+        public async Task AddAsync<T>(T entity) where T : RepositoryCollection
         {
+            var collection = database.GetCollection<T>(typeof(T).Name);
             entity.Created = DateTime.Now;
             await collection.InsertOneAsync(entity);
         }
