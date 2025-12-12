@@ -18,6 +18,7 @@ namespace PlayerBack.Infrastructure.Common
         {
             var collection = database.GetCollection<T>(typeof(T).Name);
             entity.Created = DateTime.Now;
+            entity.Updated = DateTime.Now;
             await collection.InsertOneAsync(entity);
         }
     }
