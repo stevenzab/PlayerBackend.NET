@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using PlayerBack.Infrastructure.Models;
 
 namespace PlayerBack.Infrastructure.Common
 {
-    public interface IBaseRepository
+    public interface IBaseRepository<T> where T : RepositoryCollection
     {
+        Task AddAsync(T entity);
+
+        IQueryable<T> AsQueryable();
     }
 }
