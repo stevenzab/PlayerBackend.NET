@@ -1,4 +1,4 @@
-namespace PlayerBack
+namespace PlayerBack.Api
 {
     public class WeatherForecast
     {
