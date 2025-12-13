@@ -21,5 +21,14 @@ namespace PlayerBack.Application.Services.PlayerNs
 
             return playerDtos;
         }
+
+        public async Task<PlayerDto> GetPlayerByIdAsync(string id, CancellationToken cancellationToken)
+        {
+            var players = await playerDataAccess.GetPlayerByIdAsync(id, cancellationToken);
+
+            var playerDto = players.FirstOrDefault()?.MapToDto();
+
+            return playerDto;
+        }
     }
 }

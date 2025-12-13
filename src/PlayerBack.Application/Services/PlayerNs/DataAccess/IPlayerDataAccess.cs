@@ -5,5 +5,8 @@ namespace PlayerBack.Application.Services.PlayerNs.DataAccess
     public interface IPlayerDataAccess
     {
         Task<IList<Player>> GetPlayersAsync(CancellationToken cancellationToken);
+        Task<IList<Player>> GetPlayerByIdAsync(string id, CancellationToken cancellationToken);
+
+        Task CreatePlayerAsync(Player player);
     }
 }

@@ -24,5 +24,16 @@ namespace PlayerBack.Api.Controllers
 
             return Ok(result);
         }
+
+        [HttpGet("Player/{id}")]
+        public async Task<IActionResult> GetPlayerByIdAsync(string id, CancellationToken cancellationToken)
+        {
+            var result = await playerService.GetPlayerByIdAsync(id, cancellationToken);
+
+            if (result == null)
+                return NotFound();
+
+            return Ok(result);
+        }
     }
 }

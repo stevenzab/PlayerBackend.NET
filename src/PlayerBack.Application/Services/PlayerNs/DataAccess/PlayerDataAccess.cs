@@ -20,5 +20,18 @@ namespace PlayerBack.Application.Services.PlayerNs.DataAccess
                 .OrderBy(p => p.Data.Rank)
                 .ToListAsync(cancellationToken);
         }
+
+        public async Task CreatePlayerAsync(Player player)
+        {
+             await baseRepository.AddAsync(player);
+        }
+
+        public async Task<IList<Player>> GetPlayerByIdAsync(string id, CancellationToken cancellationToken)
+        {
+            return await baseRepository
+                .AsQueryable<Player>()
+                .Where(p => p.PlayerId.ToString() == id)
+                .ToListAsync(cancellationToken);
+        }
     }
 }
