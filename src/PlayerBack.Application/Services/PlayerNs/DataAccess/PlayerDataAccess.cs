@@ -17,6 +17,7 @@ namespace PlayerBack.Application.Services.PlayerNs.DataAccess
         {
             return await baseRepository
                 .AsQueryable<Player>()
+                .OrderBy(p => p.Data.Rank)
                 .ToListAsync(cancellationToken);
         }
     }
