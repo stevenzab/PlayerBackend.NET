@@ -7,7 +7,7 @@ using PlayerBack.Domain.Dtos;
 namespace PlayerBack.Api.UnitTests
 {
     [TestClass]
-    public class ControllerTest
+    public class PlayerControllerTest
     {
 
         [TestClass]
