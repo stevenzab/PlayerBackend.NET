@@ -7,5 +7,7 @@ namespace PlayerBack.Application.Services.PlayerNs
     {
         Task<IList<PlayerDto>> GetPlayersAsync(CancellationToken cancellationToken);
         Task<PlayerDto> GetPlayerByIdAsync(string id, CancellationToken cancellationToken);
+
+        Task CreatePlayerAsync(PlayerDto player);
     }
 }

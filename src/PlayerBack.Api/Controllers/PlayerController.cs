@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using PlayerBack.Application.Services.PlayerNs;
+using PlayerBack.Domain.Dtos;
 
 namespace PlayerBack.Api.Controllers
 {
@@ -34,6 +35,13 @@ namespace PlayerBack.Api.Controllers
                 return NotFound();
 
             return Ok(result);
+        }
+
+        [HttpPost("CreatePlayer")]
+        public async Task<IActionResult> CreatePlayerAsync([FromBody] PlayerDto player)
+        {
+            await playerService.CreatePlayerAsync(player);
+            return Ok();
         }
     }
 }

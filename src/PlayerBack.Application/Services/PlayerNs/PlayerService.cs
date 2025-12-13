@@ -1,6 +1,7 @@
 ﻿using PlayerBack.Application.Services.PlayerNs.DataAccess;
 using PlayerBack.Domain.Dtos;
 using PlayerBack.Domain.Mapping;
+using PlayerBack.Domain.Models;
 
 namespace PlayerBack.Application.Services.PlayerNs
 {
@@ -29,6 +30,34 @@ namespace PlayerBack.Application.Services.PlayerNs
             var playerDto = players.FirstOrDefault()?.MapToDto();
 
             return playerDto;
+        }
+
+        public async Task CreatePlayerAsync(PlayerDto dto)
+        {
+            var player = new Player
+            {
+                Firstname = dto.Firstname,
+                Lastname = dto.Lastname,
+                Shortname = dto.Shortname,
+                Sex = dto.Sex,
+                Picture = dto.Picture,
+                Country = new Country
+                {
+                    Picture = dto.Country?.Picture ?? string.Empty,
+                    Code = dto.Country?.Code ?? string.Empty
+                },
+                Data = new PlayerData
+                {
+                    Rank = dto.Data?.Rank ?? 0,
+                    Points = dto.Data?.Points ?? 0,
+                    Weight = dto.Data?.Weight ?? 0,
+                    Height = dto.Data?.Height ?? 0,
+                    Age = dto.Data?.Age ?? 0,
+                    Last = dto.Data?.Last ?? new List<int>()
+                }
+            };
+
+            await playerDataAccess.CreatePlayerAsync(player);
         }
     }
 }

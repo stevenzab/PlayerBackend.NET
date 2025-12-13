@@ -1,4 +1,5 @@
-﻿using PlayerBack.Domain.Models;
+﻿using PlayerBack.Domain.Dtos;
+using PlayerBack.Domain.Models;
 
 namespace PlayerBack.Application.Services.PlayerNs.DataAccess
 {
