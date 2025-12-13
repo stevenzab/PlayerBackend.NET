@@ -26,8 +26,8 @@ namespace PlayerBack.Api.Controllers
             return Ok(result);
         }
 
-        [HttpGet("Player/{id}")]
-        public async Task<IActionResult> GetPlayerByIdAsync(string id, CancellationToken cancellationToken)
+        [HttpGet("Player/{id}", Name = "GetPlayerById")]
+        public async Task<IActionResult> GetPlayerByIdAsync(int id, CancellationToken cancellationToken)
         {
             var result = await playerService.GetPlayerByIdAsync(id, cancellationToken);
 
@@ -40,8 +40,12 @@ namespace PlayerBack.Api.Controllers
         [HttpPost("CreatePlayer")]
         public async Task<IActionResult> CreatePlayerAsync([FromBody] PlayerDto player)
         {
-            await playerService.CreatePlayerAsync(player);
-            return Ok();
+            var createdPlayer = await playerService.CreatePlayerAsync(player);
+
+            return CreatedAtRoute(
+                "GetPlayerById",
+                new { id = createdPlayer.PlayerId },
+                createdPlayer);
         }
     }
 }
