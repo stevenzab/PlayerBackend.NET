@@ -4,11 +4,11 @@
     {
         public int PlayerId { get; set; }
 
-        public string Firstname { get; set; }
+        public string FirstName { get; set; }
 
-        public string Lastname { get; set; }
+        public string LastName { get; set; }
 
-        public string Shortname { get; set; }
+        public string ShortName { get; set; }
 
         public string Sex { get; set; }
 

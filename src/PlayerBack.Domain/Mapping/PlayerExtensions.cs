@@ -12,9 +12,9 @@ namespace PlayerBack.Domain.Mapping
             return new PlayerDto
             {
                 PlayerId = source.PlayerId,
-                Firstname = source.Firstname,
-                Lastname = source.Lastname,
-                Shortname = source.Shortname,
+                FirstName = source.FirstName,
+                LastName = source.LastName,
+                ShortName = source.ShortName,
                 Sex = source.Sex,
                 Country = new CountryDto
                 {

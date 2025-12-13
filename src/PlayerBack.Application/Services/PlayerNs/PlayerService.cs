@@ -23,7 +23,7 @@ namespace PlayerBack.Application.Services.PlayerNs
             return playerDtos;
         }
 
-        public async Task<PlayerDto> GetPlayerByIdAsync(string id, CancellationToken cancellationToken)
+        public async Task<PlayerDto> GetPlayerByIdAsync(int id, CancellationToken cancellationToken)
         {
             var players = await playerDataAccess.GetPlayerByIdAsync(id, cancellationToken);
 
@@ -32,13 +32,13 @@ namespace PlayerBack.Application.Services.PlayerNs
             return playerDto;
         }
 
-        public async Task CreatePlayerAsync(PlayerDto dto)
+        public async Task<PlayerDto> CreatePlayerAsync(PlayerDto dto)
         {
             var player = new Player
             {
-                Firstname = dto.Firstname,
-                Lastname = dto.Lastname,
-                Shortname = dto.Shortname,
+                FirstName = dto.FirstName,
+                LastName = dto.LastName,
+                ShortName = dto.ShortName,
                 Sex = dto.Sex,
                 Picture = dto.Picture,
                 Country = new Country
@@ -58,6 +58,10 @@ namespace PlayerBack.Application.Services.PlayerNs
             };
 
             await playerDataAccess.CreatePlayerAsync(player);
+
+            dto.PlayerId = player.PlayerId;
+
+            return dto;
         }
     }
 }

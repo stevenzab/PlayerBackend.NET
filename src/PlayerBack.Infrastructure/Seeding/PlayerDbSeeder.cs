@@ -42,9 +42,9 @@ namespace PlayerBack.Infrastructure.Seeding
                 var player = new Player
                 {
                     PlayerId = playerData.Id,
-                    Firstname = playerData.Firstname ?? string.Empty,
-                    Lastname = playerData.Lastname ?? string.Empty,
-                    Shortname = playerData.Shortname ?? string.Empty,
+                    FirstName = playerData.Firstname ?? string.Empty,
+                    LastName = playerData.Lastname ?? string.Empty,
+                    ShortName = playerData.Shortname ?? string.Empty,
                     Sex = playerData.Sex ?? string.Empty,
                     Picture = playerData.Picture ?? string.Empty,
                     Country = new Country
