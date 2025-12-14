@@ -1,4 +1,5 @@
-﻿using PlayerBack.Domain.Models;
+﻿using MongoDB.Driver;
+using PlayerBack.Domain.Models;
 
 namespace PlayerBack.Infrastructure.Common
 {
@@ -7,5 +8,7 @@ namespace PlayerBack.Infrastructure.Common
         Task AddAsync<T>(T entity) where T : RepositoryCollection;
 
         IQueryable<T> AsQueryable<T>();
+
+        IMongoCollection<T> GetCollection<T>(string name);
     }
 }

@@ -21,5 +21,10 @@ namespace PlayerBack.Infrastructure.Common
             entity.Updated = DateTime.Now;
             await collection.InsertOneAsync(entity);
         }
+
+        public IMongoCollection<T> GetCollection<T>(string name)
+        {
+            return database.GetCollection<T>(name);
+        }
     }
 }
