@@ -142,5 +142,52 @@ namespace PlayerBack.Application.UnitTests
             Assert.AreEqual(dto.PlayerId, result.PlayerId);
             playerDataAccessMock.Verify(d => d.CreatePlayerAsync(It.Is<Player>(p => p.FirstName == dto.FirstName && p.LastName == dto.LastName)), Times.Once);
         }
+
+        [TestMethod]
+        public async Task GetStatisticsAsync_ComputesCorrectStatistics()
+        {
+            // Arrange
+            var players = new List<Player>
+            {
+                new Player
+                {
+                    PlayerId = 1,
+                    Country = new Country { Code = "USA" },
+                    Data = new PlayerData { Last = new List<int> { 1, 1, 0 }, Height = 170, Weight = 60 }
+                },
+                new Player
+                {
+                    PlayerId = 2,
+                    Country = new Country { Code = "USA" },
+                    Data = new PlayerData { Last = new List<int> { 1, 0 }, Height = 180, Weight = 80 }
+                },
+                new Player
+                {
+                    PlayerId = 3,
+                    Country = new Country { Code = "FRA" },
+                    Data = new PlayerData { Last = new List<int> { 1, 1, 1 }, Height = 175, Weight = 75 }
+                },
+                new Player
+                {
+                    PlayerId = 4,
+                    Country = null,
+                    Data = new PlayerData { Last = new List<int>(), Height = 0, Weight = 0 }
+                }
+            };
+
+            playerDataAccessMock
+                .Setup(d => d.GetPlayersAsync(It.IsAny<CancellationToken>()))
+                .ReturnsAsync(players);
+
+            // Act
+            var result = await service.GetStatisticsAsync(CancellationToken.None);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual("FRA", result.CountryCodeWithHighestWinRatio);
+            Assert.AreEqual(1, result.HighestWinRatio);
+            Assert.AreEqual(23.31, result.AverageBmi);
+            Assert.AreEqual(175.0, result.MedianHeight);
+        }
     }
 }
