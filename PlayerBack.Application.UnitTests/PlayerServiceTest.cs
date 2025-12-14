@@ -81,7 +81,7 @@ namespace PlayerBack.Application.UnitTests
             // Arrange
             var player = new Player
             {
-                PlayerId = 52,
+                PlayerId = 1,
                 FirstName = "Existing",
                 LastName = "Player",
                 Country = new Country { Code = "ESP", Picture = string.Empty },
@@ -89,15 +89,15 @@ namespace PlayerBack.Application.UnitTests
             };
 
             playerDataAccessMock
-                .Setup(d => d.GetPlayerByIdAsync(52, It.IsAny<CancellationToken>()))
+                .Setup(d => d.GetPlayerByIdAsync(player.PlayerId, It.IsAny<CancellationToken>()))
                 .ReturnsAsync(new List<Player> { player });
 
             // Act
-            var result = await service.GetPlayerByIdAsync(52, CancellationToken.None);
+            var result = await service.GetPlayerByIdAsync(player.PlayerId, CancellationToken.None);
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(52, result.PlayerId);
+            Assert.AreEqual(player.PlayerId, result.PlayerId);
             Assert.AreEqual("Existing", result.FirstName);
         }
 
@@ -106,11 +106,11 @@ namespace PlayerBack.Application.UnitTests
         {
             // Arrange
             playerDataAccessMock
-                .Setup(d => d.GetPlayerByIdAsync(99, It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new List<Player>()); // empty => not found
+                .Setup(d => d.GetPlayerByIdAsync(1, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(new List<Player>());
 
             // Act
-            var result = await service.GetPlayerByIdAsync(99, CancellationToken.None);
+            var result = await service.GetPlayerByIdAsync(1, CancellationToken.None);
 
             // Assert
             Assert.IsNull(result);
@@ -122,6 +122,7 @@ namespace PlayerBack.Application.UnitTests
             // Arrange
             var dto = new PlayerDto
             {
+                PlayerId = 1,
                 FirstName = "New",
                 LastName = "Player",
                 Country = null,
@@ -130,7 +131,7 @@ namespace PlayerBack.Application.UnitTests
 
             playerDataAccessMock
                 .Setup(d => d.CreatePlayerAsync(It.IsAny<Player>()))
-                .Callback<Player>(p => p.PlayerId = 123)
+                .Callback<Player>(p => p.PlayerId = 1)
                 .Returns(Task.CompletedTask);
 
             // Act
@@ -138,7 +139,7 @@ namespace PlayerBack.Application.UnitTests
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(123, result.PlayerId);
+            Assert.AreEqual(dto.PlayerId, result.PlayerId);
             playerDataAccessMock.Verify(d => d.CreatePlayerAsync(It.Is<Player>(p => p.FirstName == dto.FirstName && p.LastName == dto.LastName)), Times.Once);
         }
     }
