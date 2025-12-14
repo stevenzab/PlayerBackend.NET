@@ -1,4 +1,6 @@
-﻿using MongoDB.Driver.Linq;
+﻿using MongoDB.Bson;
+using MongoDB.Driver;
+using MongoDB.Driver.Linq;
 using PlayerBack.Domain.Dtos;
 using PlayerBack.Domain.Models;
 using PlayerBack.Infrastructure.Common;
@@ -22,9 +24,27 @@ namespace PlayerBack.Application.Services.PlayerNs.DataAccess
                 .ToListAsync(cancellationToken);
         }
 
+        private async Task<int> GetNextPlayerIdAsync()
+        {
+            var counters = baseRepository.GetCollection<BsonDocument>("counters");
+            var filter = Builders<BsonDocument>.Filter.Eq("_id", "playerId");
+            var update = Builders<BsonDocument>.Update.Inc("sequence_value", 1);
+            var options = new FindOneAndUpdateOptions<BsonDocument>
+            {
+                ReturnDocument = ReturnDocument.After,
+                IsUpsert = true
+            };
+
+            var result = await counters.FindOneAndUpdateAsync(filter, update, options);
+            return result["sequence_value"].AsInt32;
+        }
+
+
         public async Task CreatePlayerAsync(Player player)
         {
+            player.PlayerId = await GetNextPlayerIdAsync();
             await baseRepository.AddAsync(player);
+            
         }
 
         public async Task<IList<Player>> GetPlayerByIdAsync(int id, CancellationToken cancellationToken)
