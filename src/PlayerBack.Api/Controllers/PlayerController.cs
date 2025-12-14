@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PlayerBack.Application.Services.PlayerNs;
 using PlayerBack.Domain.Dtos;
+using PlayerBack.Domain.Models;
 
 namespace PlayerBack.Api.Controllers
 {
@@ -46,6 +47,16 @@ namespace PlayerBack.Api.Controllers
                 "GetPlayerById",
                 new { id = createdPlayer.PlayerId },
                 createdPlayer);
+        }
+
+        [HttpGet("GetStatistics")]
+        public async Task<ActionResult<StatisticsModel>> GetPlayerStatisticsAsync(CancellationToken cancellationToken)
+        {
+            var stats = await playerService.GetStatisticsAsync(cancellationToken);
+            if (stats == null)
+                return NotFound();
+
+            return Ok(stats);
         }
     }
 }
