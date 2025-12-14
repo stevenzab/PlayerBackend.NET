@@ -35,8 +35,7 @@ namespace PlayerBack.Application.Services.PlayerNs
         public async Task<PlayerDto> CreatePlayerAsync(PlayerDto dto)
         {
             var player = new Player
-            {
-                PlayerId = dto.PlayerId,
+            {   
                 FirstName = dto.FirstName,
                 LastName = dto.LastName,
                 ShortName = dto.ShortName,
