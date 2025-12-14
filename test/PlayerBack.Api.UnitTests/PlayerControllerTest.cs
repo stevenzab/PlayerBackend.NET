@@ -3,6 +3,7 @@ using Moq;
 using PlayerBack.Api.Controllers;
 using PlayerBack.Application.Services.PlayerNs;
 using PlayerBack.Domain.Dtos;
+using PlayerBack.Domain.Models;
 
 namespace PlayerBack.Api.UnitTests
 {
@@ -98,6 +99,37 @@ namespace PlayerBack.Api.UnitTests
 
                 // Assert
                 Assert.IsInstanceOfType(result, typeof(CreatedAtRouteResult));
+            }
+            [TestMethod]
+            public async Task GetPlayerStatisticsAsync_ReturnsOk_WhenStatisticsExist()
+            {
+                // Arrange
+                var stats = new StatisticsModel
+                {
+                    CountryCodeWithHighestWinRatio = "FRA",
+                    HighestWinRatio = 0.75,
+                    AverageBmi = 23.5,
+                    MedianHeight = 180.0
+                };
+
+                playerServiceMock
+                    .Setup(s => s.GetStatisticsAsync(It.IsAny<CancellationToken>()))
+                    .ReturnsAsync(stats);
+
+                // Act
+                var actionResult = await controller.GetPlayerStatisticsAsync(CancellationToken.None);
+
+                // Assert
+                Assert.IsNotNull(actionResult);
+                var okResult = actionResult.Result as OkObjectResult;
+                Assert.AreEqual(200, okResult.StatusCode);
+
+                var returnedStats = okResult.Value as StatisticsModel;
+                Assert.IsNotNull(returnedStats);
+                Assert.AreEqual(stats.CountryCodeWithHighestWinRatio, returnedStats.CountryCodeWithHighestWinRatio);
+                Assert.AreEqual(stats.HighestWinRatio, returnedStats.HighestWinRatio);
+                Assert.AreEqual(stats.AverageBmi, returnedStats.AverageBmi);
+                Assert.AreEqual(stats.MedianHeight, returnedStats.MedianHeight);
             }
         }
     }
