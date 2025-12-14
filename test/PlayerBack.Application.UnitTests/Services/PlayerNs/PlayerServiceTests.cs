@@ -1,16 +1,10 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Moq;
+﻿using Moq;
 using PlayerBack.Application.Services.PlayerNs;
 using PlayerBack.Application.Services.PlayerNs.DataAccess;
 using PlayerBack.Domain.Dtos;
 using PlayerBack.Domain.Models;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Timers;
 
-namespace PlayerBack.Application.UnitTests
+namespace PlayerBack.Application.UnitTests.Services.PlayerNs
 {
     [TestClass]
     public sealed class PlayerServiceTest

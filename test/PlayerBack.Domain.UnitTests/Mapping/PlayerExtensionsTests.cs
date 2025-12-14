@@ -1,12 +1,11 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PlayerBack.Domain.Mapping;
+﻿using PlayerBack.Domain.Mapping;
 using PlayerBack.Domain.Models;
-using System.Collections.Generic;
+using System;
 
-namespace PlayerBack.Domain.UnitTests
+namespace PlayerBack.Domain.UnitTests.Mapping
 {
     [TestClass]
-    public class PlayerDomainTest
+    public class PlayerExtensionsTests
     {
         [TestMethod]
         public void MapToDto_FullPlayer_MapsProperties()
