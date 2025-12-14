@@ -36,6 +36,7 @@ namespace PlayerBack.Application.Services.PlayerNs
         {
             var player = new Player
             {
+                PlayerId = dto.PlayerId,
                 FirstName = dto.FirstName,
                 LastName = dto.LastName,
                 ShortName = dto.ShortName,
