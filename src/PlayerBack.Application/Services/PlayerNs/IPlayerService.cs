@@ -9,5 +9,7 @@ namespace PlayerBack.Application.Services.PlayerNs
         Task<PlayerDto> GetPlayerByIdAsync(int id, CancellationToken cancellationToken);
 
         Task<PlayerDto> CreatePlayerAsync(PlayerDto player);
+
+        Task<StatisticsModel> GetStatisticsAsync(CancellationToken cancellationToken);
     }
 }
