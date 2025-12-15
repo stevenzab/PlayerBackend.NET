@@ -23,16 +23,13 @@ app.UseExceptionHandler();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-
     await app.Services.SeedDatabaseAsync();
-}
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 app.MapHealthChecks("/health");
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.Run();
