@@ -110,8 +110,6 @@ namespace PlayerBack.Infrastructure.UnitTests.Seeding
 
             var seeder = new PlayerDbSeeder(mockRepo.Object);
 
-            // Pre-assert: file exists so seeder will process it
-            Assert.IsTrue(File.Exists(seedPath));
 
             // Act
             await seeder.SeedAsync();
@@ -120,6 +118,7 @@ namespace PlayerBack.Infrastructure.UnitTests.Seeding
             mockRepo.Verify(r => r.AddAsync(It.IsAny<Player>()), Times.Exactly(2));
             mockRepo.VerifyAll();
 
+            Assert.IsTrue(File.Exists(seedPath));
             Assert.AreEqual(2, addedPlayers.Count, "Expected exactly two players to be added.");
 
             var alice = addedPlayers.SingleOrDefault(p => p.PlayerId == 1);

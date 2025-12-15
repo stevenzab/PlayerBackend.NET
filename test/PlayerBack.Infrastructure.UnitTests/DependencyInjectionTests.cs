@@ -40,7 +40,7 @@ namespace PlayerBack.Infrastructure.UnitTests
             services.AddInfrastructure(configuration);
             var provider = services.BuildServiceProvider();
 
-            // Assert - registrations resolvable
+            // Assert
             var database = provider.GetService<IMongoDatabase>();
             var baseRepository = provider.GetService<IBaseRepository>();
             var seeder = provider.GetService<IDbSeeder>();
@@ -54,6 +54,45 @@ namespace PlayerBack.Infrastructure.UnitTests
 
             Assert.IsInstanceOfType(baseRepository, typeof(BaseRepository));
             Assert.IsInstanceOfType(seeder, typeof(PlayerDbSeeder));
+        }
+
+        [TestMethod]
+        public async Task SeedDatabaseAsync_DoesNotCallSeedAsync_WhenHasDataIsTrue()
+        {
+            // Arrange
+            var mockSeeder = new Mock<IDbSeeder>(MockBehavior.Strict);
+            mockSeeder.Setup(s => s.HasDataAsync()).ReturnsAsync(true);
+
+            var services = new ServiceCollection();
+            services.AddScoped<IDbSeeder>(_ => mockSeeder.Object);
+            var provider = services.BuildServiceProvider();
+
+            // Act
+            await provider.SeedDatabaseAsync();
+
+            // Assert
+            mockSeeder.Verify(s => s.HasDataAsync(), Times.Once);
+            mockSeeder.Verify(s => s.SeedAsync(), Times.Never);
+        }
+
+        [TestMethod]
+        public async Task SeedDatabaseAsync_CallsSeedAsync_WhenHasDataIsFalse()
+        {
+            // Arrange
+            var mockSeeder = new Mock<IDbSeeder>(MockBehavior.Strict);
+            mockSeeder.Setup(s => s.HasDataAsync()).ReturnsAsync(false);
+            mockSeeder.Setup(s => s.SeedAsync()).Returns(Task.CompletedTask).Verifiable();
+
+            var services = new ServiceCollection();
+            services.AddScoped<IDbSeeder>(_ => mockSeeder.Object);
+            var provider = services.BuildServiceProvider();
+
+            // Act
+            await provider.SeedDatabaseAsync();
+
+            // Assert
+            mockSeeder.Verify(s => s.HasDataAsync(), Times.Once);
+            mockSeeder.Verify(s => s.SeedAsync(), Times.Once);
         }
     }
 }
