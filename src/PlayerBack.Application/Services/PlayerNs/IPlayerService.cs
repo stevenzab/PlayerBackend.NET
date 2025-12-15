@@ -11,5 +11,8 @@ namespace PlayerBack.Application.Services.PlayerNs
         Task<PlayerDto> CreatePlayerAsync(PlayerDto player);
 
         Task<StatisticsModel> GetStatisticsAsync(CancellationToken cancellationToken);
+        CountryWinRatioModel ComputeCountryWithHighestWinRatio(IEnumerable<Player> players);
+        double ComputeAverageBmi(IEnumerable<Player> players);
+        double ComputeMedianHeight(IEnumerable<Player> players);
     }
 }

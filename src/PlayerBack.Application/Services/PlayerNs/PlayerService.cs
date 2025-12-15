@@ -83,7 +83,7 @@ namespace PlayerBack.Application.Services.PlayerNs
             };
         }
 
-        private static CountryWinRatioModel ComputeCountryWithHighestWinRatio(IEnumerable<Player> players)
+        public CountryWinRatioModel ComputeCountryWithHighestWinRatio(IEnumerable<Player> players)
         {
             var countryStats = players
                 .Where(p => !string.IsNullOrWhiteSpace(p.Country?.Code))
@@ -111,7 +111,7 @@ namespace PlayerBack.Application.Services.PlayerNs
             return countryStats ?? new CountryWinRatioModel { CountryCode = null, Ratio = 0.0 };
         }
 
-        private static double ComputeAverageBmi(IEnumerable<Player> players)
+        public double ComputeAverageBmi(IEnumerable<Player> players)
         {
             var bmis = players
                 .Select(p =>
@@ -126,7 +126,7 @@ namespace PlayerBack.Application.Services.PlayerNs
             return bmis.Any() ? bmis.Average() : 0.0;
         }
 
-        private static double ComputeMedianHeight(IEnumerable<Player> players)
+        public double ComputeMedianHeight(IEnumerable<Player> players)
         {
             var heights = players
                 .Select(p => p.Data?.Height ?? 0)

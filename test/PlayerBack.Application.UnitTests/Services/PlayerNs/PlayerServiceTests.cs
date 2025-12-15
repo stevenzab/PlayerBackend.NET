@@ -183,5 +183,83 @@ namespace PlayerBack.Application.UnitTests.Services.PlayerNs
             Assert.AreEqual(23.31, result.AverageBmi);
             Assert.AreEqual(175.0, result.MedianHeight);
         }
+
+        [TestMethod]
+        public void ComputeAverageBmi_Returns_AverageIgnoringInvalidEntries()
+        {
+            // Arrange
+            var players = new List<Player>
+            {
+                new Player { PlayerId = 1, Data = new PlayerData { Weight = 60, Height = 170 } }, // BMI ≈ 20.761246
+                new Player { PlayerId = 2, Data = new PlayerData { Weight = 80, Height = 180 } }, // BMI ≈ 24.691358
+                new Player { PlayerId = 3, Data = new PlayerData { Weight = 0, Height = 180 } },
+                new Player { PlayerId = 4, Data = new PlayerData { Weight = 70, Height = 0 } }
+            };
+
+            // Act
+            var avgBmi = service.ComputeAverageBmi(players);
+
+            var expected = (60.0 / (1.7 * 1.7) + 80.0 / (1.8 * 1.8)) / 2.0;
+
+            // Assert
+            Assert.AreEqual(expected, avgBmi, 0.01);
+        }
+
+        [TestMethod]
+        public void ComputeCountryWithHighestWinRatio_Returns_CorrectCountryAndRatio()
+        {
+            // Arrange
+            var players = new List<Player>
+            {
+                new Player { PlayerId = 1, Country = new Country { Code = "USA" }, Data = new PlayerData { Last = new List<int> { 1, 1, 0 } } },
+                new Player { PlayerId = 2, Country = new Country { Code = "USA" }, Data = new PlayerData { Last = new List<int> { 1, 0 } } },
+                new Player { PlayerId = 3, Country = new Country { Code = "FRA" }, Data = new PlayerData { Last = new List<int> { 1, 1, 1 } } },
+                new Player { PlayerId = 4, Country = new Country { Code = "ESP" }, Data = new PlayerData { Last = new List<int>() } },
+                new Player { PlayerId = 5, Country = null, Data = new PlayerData { Last = new List<int> { 1 } } }
+            };
+
+            // Act
+            var result = service.ComputeCountryWithHighestWinRatio(players);
+
+            // Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual("FRA", result.CountryCode);
+            Assert.AreEqual(1.0, result.Ratio);
+        }
+
+        [TestMethod]
+        public void ComputeMedianHeight_Returns_CorrectMedian_ForOddEvenAndEmpty()
+        {
+            // Odd count
+            var oddPlayers = new List<Player>
+            {
+                new Player { Data = new PlayerData { Height = 170 } },
+                new Player { Data = new PlayerData { Height = 175 } },
+                new Player { Data = new PlayerData { Height = 180 } }
+            };
+
+            var oddMedian = service.ComputeMedianHeight(oddPlayers);
+            Assert.AreEqual(175, oddMedian);
+
+            var evenPlayers = new List<Player>
+            {
+                new Player { Data = new PlayerData { Height = 160 } },
+                new Player { Data = new PlayerData { Height = 170 } },
+                new Player { Data = new PlayerData { Height = 180 } },
+                new Player { Data = new PlayerData { Height = 190 } }
+            };
+
+            var evenMedian = service.ComputeMedianHeight(evenPlayers);
+            Assert.AreEqual(175, evenMedian);
+
+            var emptyPlayers = new List<Player>
+            {
+                new Player { Data = new PlayerData { Height = 0 } },
+                new Player { Data = new PlayerData { Height = 0 } }
+            };
+
+            var emptyMedian = service.ComputeMedianHeight(emptyPlayers);
+            Assert.AreEqual(0, emptyMedian);
+        }
     }
 }
