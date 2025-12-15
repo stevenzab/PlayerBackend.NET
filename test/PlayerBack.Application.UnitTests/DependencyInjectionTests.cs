@@ -12,29 +12,28 @@ namespace PlayerBack.Application.UnitTests
     [TestClass]
     public class DependencyInjectionTests
     {
-        //[TestMethod]
-        //public void AddApplication_RegistersServices_ReturnsResolvableTypes()
-        //{
-        //    // Arrange
-        //    var services = new ServiceCollection();
+        [TestMethod]
+        public void AddApplication_Registers_ApplicationServices()
+        {
+            // Arrange
+            var services = new ServiceCollection();
 
-        //    // Register a mock for IBaseRepository so PlayerDataAccess can be constructed by the container.
-        //    var mockBaseRepo = new Mock<IBaseRepository>();
-        //    services.AddSingleton<IBaseRepository>(mockBaseRepo.Object);
+            var mockBaseRepo = new Mock<IBaseRepository>();
+            services.AddSingleton<IBaseRepository>(mockBaseRepo.Object);
 
-        //    // Act
-        //    services.AddApplication();
-        //    using var provider = services.BuildServiceProvider();
+            // Act
+            services.AddApplication();
+            using var provider = services.BuildServiceProvider();
 
-        //    var playerService = provider.GetService<IPlayerService>();
-        //    var playerDataAccess = provider.GetService<IPlayerDataAccess>();
+            var playerService = provider.GetService<IPlayerService>();
+            var playerDataAccess = provider.GetService<IPlayerDataAccess>();
 
-        //    // Assert
-        //    Assert.IsNotNull(playerService, "IPlayerService should be registered and resolvable.");
-        //    Assert.IsNotNull(playerDataAccess, "IPlayerDataAccess should be registered and resolvable.");
+            // Assert
+            Assert.IsNotNull(playerService);
+            Assert.IsNotNull(playerDataAccess);
 
-        //    Assert.IsInstanceOfType(playerService, typeof(PlayerService));
-        //    Assert.IsInstanceOfType(playerDataAccess, typeof(PlayerDataAccess));
-        //}
+            Assert.IsInstanceOfType(playerService, typeof(PlayerService));
+            Assert.IsInstanceOfType(playerDataAccess, typeof(PlayerDataAccess));
+        }
     }
 }
