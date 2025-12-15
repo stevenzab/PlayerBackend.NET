@@ -11,6 +11,7 @@ builder.Services
     .AddSwaggerGen()
     .AddApplication()
     .AddInfrastructure(builder.Configuration);
+builder.Services.AddHealthChecks();
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
@@ -32,5 +33,6 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
+app.MapHealthChecks("/health");
 
 app.Run();
