@@ -2,8 +2,19 @@
 
 Une API .NET 8 (ASP.NET Core) pour la gestion des joueurs, construite avec une architecture en couches (Domain, Application, Infrastructure, API).
 
+## 🌐 Démo en ligne
+
+L'API est déployée et accessible en production:
+
+**URL**: [https://playerbackdemo.azurewebsites.net/](https://playerbackdemo.azurewebsites.net/)
+
+**Swagger UI**: [https://playerbackdemo.azurewebsites.net/swagger](https://playerbackdemo.azurewebsites.net/swagger)
+
+Vous pouvez tester l'API directement sans installation locale!
+
 ## 📋 Table des matières
 
+- [Démo en ligne](#démo-en-ligne)
 - [Prérequis](#prérequis)
 - [Installation](#installation)
 - [Lancer l'application](#lancer-lapplication)
@@ -204,25 +215,11 @@ Les paramètres de connexion sont définis dans les fichiers `appsettings.json`:
 }
 ```
 
-**appsettings.json** (production):
-```json
-{
-  "AllowedHosts": "*"
-}
-```
-
-### Modification de la configuration
-
-Pour développement local avec MongoDB local, modifiez `appsettings.Development.json`:
-
-```json
-{
-  "MongoDB": {
-    "ConnectionString": "mongodb://localhost:27017",
-    "DatabaseName": "Dev"
-  }
-}
-```
+> **Note**: Pour utiliser MongoDB en local:
+> - Téléchargez et installez [MongoDB Community Server](https://www.mongodb.com/try/download/community)
+> - (Optionnel) Installez [MongoDB Compass](https://www.mongodb.com/try/download/compass) pour gérer visuellement votre base de données
+> - Assurez-vous que MongoDB est en cours d'exécution (par défaut sur `localhost:27017`)
+> - Utilisez la configuration ci-dessus dans votre `appsettings.Development.json`
 
 ## 🔌 Endpoints
 
