@@ -1,7 +1,6 @@
 ﻿using Mongo2Go;
 using MongoDB.Bson;
 using MongoDB.Driver;
-using Moq;
 using PlayerBack.Application.Services.PlayerNs.DataAccess;
 using PlayerBack.Domain.Models;
 using PlayerBack.Infrastructure.Common;
@@ -16,9 +15,7 @@ namespace PlayerBack.Application.UnitTests.Services.PlayerNs.DataAccess
         private IMongoClient client;
         private IMongoDatabase database;
         private IBaseRepository baseRepository;
-        private MockRepository mockRepository;
 
-        private Mock<IBaseRepository> mockBaseRepository;
 
         [TestInitialize]
         public void Setup()
@@ -67,9 +64,9 @@ namespace PlayerBack.Application.UnitTests.Services.PlayerNs.DataAccess
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(3, result.Count);
-            Assert.AreEqual(2, result[0].PlayerId); // rank 2
-            Assert.AreEqual(1, result[1].PlayerId); // rank 5
-            Assert.AreEqual(3, result[2].PlayerId); // rank 10
+            Assert.AreEqual(2, result[0].PlayerId);
+            Assert.AreEqual(1, result[1].PlayerId);
+            Assert.AreEqual(3, result[2].PlayerId);
         }
 
         [TestMethod]
@@ -100,7 +97,6 @@ namespace PlayerBack.Application.UnitTests.Services.PlayerNs.DataAccess
         public async Task CreatePlayerAsync_AssignsIdAndPersistsPlayerAsync()
         {
             // Arrange
-            // prepare counters collection with sequence_value = 41 so next id becomes 42
             var counters = database.GetCollection<BsonDocument>("counters");
             var initial = new BsonDocument { { "_id", "playerId" }, { "sequence_value", 41 } };
             await counters.InsertOneAsync(initial);
@@ -115,7 +111,6 @@ namespace PlayerBack.Application.UnitTests.Services.PlayerNs.DataAccess
             // Assert
             Assert.AreEqual(42, player.PlayerId);
 
-            // Verify the player was inserted in DB
             var playersCollection = database.GetCollection<Player>(typeof(Player).Name);
             var persisted = await playersCollection.Find(p => p.PlayerId == 42).FirstOrDefaultAsync();
             Assert.IsNotNull(persisted);
