@@ -24,7 +24,7 @@ Une API .NET 8 (ASP.NET Core) pour la gestion des joueurs, construite avec une a
 Avant de commencer, assurez-vous d'avoir installé:
 
 - **[.NET 8.0 SDK](https://dotnet.microsoft.com/download/dotnet/8.0)** ou version supérieure
-- **[MongoDB](https://www.mongodb.com/try/download/community)** (ou un accès à une base de données MongoDB cloud)
+- **[MongoDB](https://www.mongodb.com/try/download/community)**
 - **Git** (pour cloner le repository)
 - **Un éditeur de code** comme [Visual Studio Code](https://code.visualstudio.com/) ou [Visual Studio 2022](https://visualstudio.microsoft.com/fr/)
 
@@ -198,7 +198,7 @@ Les paramètres de connexion sont définis dans les fichiers `appsettings.json`:
 ```json
 {
   "MongoDB": {
-    "ConnectionString": "mongodb+srv://playerback:playerback@playerback.7hetqvd.mongodb.net/?appName=PlayerBack",
+    "ConnectionString": "mongodb://localhost:27017",
     "DatabaseName": "Dev"
   }
 }
