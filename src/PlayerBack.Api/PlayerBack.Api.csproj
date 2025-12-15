@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
 	<PropertyGroup>
 		<TargetFramework>net8.0</TargetFramework>
@@ -18,7 +18,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<Content Include="..\..\response.json">
+		<Content Include=".\response.json">
 			<Link>response.json</Link>
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
