@@ -14,15 +14,15 @@ Vous pouvez tester l'API directement sans installation locale!
 
 ## 📋 Table des matières
 
-- [Démo en ligne](#démo-en-ligne)
-- [Prérequis](#prérequis)
-- [Installation](#installation)
-- [Lancer l'application](#lancer-lapplication)
-- [Tester l'application](#tester-lapplication)
-- [Structure du projet](#structure-du-projet)
-- [Configuration](#configuration)
-- [Endpoints](#endpoints)
-- [Terminologie](#terminologie)
+- [Démo en ligne](#-démo-en-ligne)
+- [Prérequis](#-prérequis)
+- [Installation](#-installation)
+- [Lancer l'application](#-lancer-lapplication)
+- [Tester l'application](#-tester-lapplication)
+- [Structure du projet](#-structure-du-projet)
+- [Configuration](#-configuration)
+- [Endpoints](#-endpoints)
+- [Terminologie](#-terminologie)
 
 ## 🧭 Terminologie
 
