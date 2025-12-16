@@ -156,14 +156,14 @@ dotnet test --verbosity=detailed
 #### Exemple: Récupérer les données ensemencées
 
 ```bash
-curl -X GET "https://localhost:7001/api/players" \
+curl -X GET "https://localhost:7001/api/Player/Players" \
   -H "accept: application/json"
 ```
 
 #### Exemple: Créer une nouveau joueur (POST)
 
 ```bash
-curl -X POST "https://localhost:7001/api/players" \
+curl -X POST "https://localhost:7001/api/Player/CreatePlayer" \
   -H "Content-Type: application/json" \
   -d '{
     "firstName": "John",
