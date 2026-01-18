@@ -12,7 +12,7 @@ namespace PlayerBack.Domain.UnitTests.Mapping
         {
             var source = new Player
             {
-                PlayerId = 1,
+                Id = "1",
                 FirstName = "Alice",
                 LastName = "A",
                 ShortName = "A.A.",
@@ -25,7 +25,7 @@ namespace PlayerBack.Domain.UnitTests.Mapping
             var dto = source.MapToDto();
 
             Assert.IsNotNull(dto);
-            Assert.AreEqual(1, dto.PlayerId);
+            Assert.AreEqual("1", dto.PlayerId);
             Assert.AreEqual("Alice", dto.FirstName);
             Assert.AreEqual("A", dto.LastName);
             Assert.AreEqual("A.A.", dto.ShortName);

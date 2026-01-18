@@ -27,7 +27,7 @@ namespace PlayerBack.Application.UnitTests.Services.PlayerNs
             {
                 new Player
                 {
-                    PlayerId = 1,
+                    Id = "1",
                     FirstName = "Alice",
                     LastName = "A",
                     Country = new Country { Code = "USA", Picture = string.Empty },
@@ -35,7 +35,7 @@ namespace PlayerBack.Application.UnitTests.Services.PlayerNs
                 },
                 new Player
                 {
-                    PlayerId = 2,
+                    Id = "2",
                     FirstName = "Bob",
                     LastName = "B",
                     Country = new Country { Code = "FRA", Picture = string.Empty },
@@ -54,14 +54,14 @@ namespace PlayerBack.Application.UnitTests.Services.PlayerNs
             Assert.IsNotNull(result);
             Assert.AreEqual(2, result.Count);
 
-            Assert.AreEqual(players[0].PlayerId, result[0].PlayerId);
+            Assert.AreEqual(players[0].Id, result[0].PlayerId);
             Assert.AreEqual(players[0].FirstName, result[0].FirstName);
             Assert.IsNotNull(result[0].Country);
             Assert.AreEqual(players[0].Country.Code, result[0].Country.Code);
             Assert.IsNotNull(result[0].Data);
             Assert.AreEqual(players[0].Data.Height, result[0].Data.Height);
 
-            Assert.AreEqual(players[1].PlayerId, result[1].PlayerId);
+            Assert.AreEqual(players[1].Id, result[1].PlayerId);
             Assert.AreEqual(players[1].FirstName, result[1].FirstName);
             Assert.IsNotNull(result[1].Country);
             Assert.AreEqual(players[1].Country.Code, result[1].Country.Code);
@@ -75,7 +75,7 @@ namespace PlayerBack.Application.UnitTests.Services.PlayerNs
             // Arrange
             var player = new Player
             {
-                PlayerId = 1,
+                Id = "1",
                 FirstName = "Existing",
                 LastName = "Player",
                 Country = new Country { Code = "ESP", Picture = string.Empty },
@@ -83,15 +83,15 @@ namespace PlayerBack.Application.UnitTests.Services.PlayerNs
             };
 
             playerDataAccessMock
-                .Setup(d => d.GetPlayerByIdAsync(player.PlayerId, It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new List<Player> { player });
+                .Setup(d => d.GetPlayerByIdAsync(player.Id, It.IsAny<CancellationToken>()))
+                .ReturnsAsync(player);
 
             // Act
-            var result = await service.GetPlayerByIdAsync(player.PlayerId, CancellationToken.None);
+            var result = await service.GetPlayerByIdAsync(player.Id, CancellationToken.None);
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(player.PlayerId, result.PlayerId);
+            Assert.AreEqual(player.Id, result.PlayerId);
             Assert.AreEqual("Existing", result.FirstName);
         }
 
@@ -100,11 +100,11 @@ namespace PlayerBack.Application.UnitTests.Services.PlayerNs
         {
             // Arrange
             playerDataAccessMock
-                .Setup(d => d.GetPlayerByIdAsync(1, It.IsAny<CancellationToken>()))
-                .ReturnsAsync(new List<Player>());
+                .Setup(d => d.GetPlayerByIdAsync("1", It.IsAny<CancellationToken>()))
+                .ReturnsAsync((Player)null);
 
             // Act
-            var result = await service.GetPlayerByIdAsync(1, CancellationToken.None);
+            var result = await service.GetPlayerByIdAsync("1", CancellationToken.None);
 
             // Assert
             Assert.IsNull(result);
@@ -116,7 +116,7 @@ namespace PlayerBack.Application.UnitTests.Services.PlayerNs
             // Arrange
             var dto = new PlayerDto
             {
-                PlayerId = 1,
+                PlayerId = null,
                 FirstName = "New",
                 LastName = "Player",
                 Country = null,
@@ -125,7 +125,7 @@ namespace PlayerBack.Application.UnitTests.Services.PlayerNs
 
             playerDataAccessMock
                 .Setup(d => d.CreatePlayerAsync(It.IsAny<Player>()))
-                .Callback<Player>(p => p.PlayerId = 1)
+                .Callback<Player>(p => p.Id = "1")
                 .Returns(Task.CompletedTask);
 
             // Act
@@ -133,7 +133,7 @@ namespace PlayerBack.Application.UnitTests.Services.PlayerNs
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(dto.PlayerId, result.PlayerId);
+            Assert.AreEqual("1", result.PlayerId);
             playerDataAccessMock.Verify(d => d.CreatePlayerAsync(It.Is<Player>(p => p.FirstName == dto.FirstName && p.LastName == dto.LastName)), Times.Once);
         }
 
@@ -145,25 +145,25 @@ namespace PlayerBack.Application.UnitTests.Services.PlayerNs
             {
                 new Player
                 {
-                    PlayerId = 1,
+                    Id = "1",
                     Country = new Country { Code = "USA" },
                     Data = new PlayerData { Last = new List<int> { 1, 1, 0 }, Height = 170, Weight = 60 }
                 },
                 new Player
                 {
-                    PlayerId = 2,
+                    Id = "2",
                     Country = new Country { Code = "USA" },
                     Data = new PlayerData { Last = new List<int> { 1, 0 }, Height = 180, Weight = 80 }
                 },
                 new Player
                 {
-                    PlayerId = 3,
+                    Id = "3",
                     Country = new Country { Code = "FRA" },
                     Data = new PlayerData { Last = new List<int> { 1, 1, 1 }, Height = 175, Weight = 75 }
                 },
                 new Player
                 {
-                    PlayerId = 4,
+                    Id = "4",
                     Country = null,
                     Data = new PlayerData { Last = new List<int>(), Height = 0, Weight = 0 }
                 }
@@ -190,10 +190,10 @@ namespace PlayerBack.Application.UnitTests.Services.PlayerNs
             // Arrange
             var players = new List<Player>
             {
-                new Player { PlayerId = 1, Data = new PlayerData { Weight = 60, Height = 170 } }, // BMI ≈ 20.761246
-                new Player { PlayerId = 2, Data = new PlayerData { Weight = 80, Height = 180 } }, // BMI ≈ 24.691358
-                new Player { PlayerId = 3, Data = new PlayerData { Weight = 0, Height = 180 } },
-                new Player { PlayerId = 4, Data = new PlayerData { Weight = 70, Height = 0 } }
+                new Player { Id = "1", Data = new PlayerData { Weight = 60, Height = 170 } }, // BMI ≈ 20.761246
+                new Player { Id = "2", Data = new PlayerData { Weight = 80, Height = 180 } }, // BMI ≈ 24.691358
+                new Player { Id = "3", Data = new PlayerData { Weight = 0, Height = 180 } },
+                new Player { Id = "4", Data = new PlayerData { Weight = 70, Height = 0 } }
             };
 
             // Act
@@ -211,11 +211,11 @@ namespace PlayerBack.Application.UnitTests.Services.PlayerNs
             // Arrange
             var players = new List<Player>
             {
-                new Player { PlayerId = 1, Country = new Country { Code = "USA" }, Data = new PlayerData { Last = new List<int> { 1, 1, 0 } } },
-                new Player { PlayerId = 2, Country = new Country { Code = "USA" }, Data = new PlayerData { Last = new List<int> { 1, 0 } } },
-                new Player { PlayerId = 3, Country = new Country { Code = "FRA" }, Data = new PlayerData { Last = new List<int> { 1, 1, 1 } } },
-                new Player { PlayerId = 4, Country = new Country { Code = "ESP" }, Data = new PlayerData { Last = new List<int>() } },
-                new Player { PlayerId = 5, Country = null, Data = new PlayerData { Last = new List<int> { 1 } } }
+                new Player { Id = "1", Country = new Country { Code = "USA" }, Data = new PlayerData { Last = new List<int> { 1, 1, 0 } } },
+                new Player { Id = "2", Country = new Country { Code = "USA" }, Data = new PlayerData { Last = new List<int> { 1, 0 } } },
+                new Player { Id = "3", Country = new Country { Code = "FRA" }, Data = new PlayerData { Last = new List<int> { 1, 1, 1 } } },
+                new Player { Id = "4", Country = new Country { Code = "ESP" }, Data = new PlayerData { Last = new List<int>() } },
+                new Player { Id = "5", Country = null, Data = new PlayerData { Last = new List<int> { 1 } } }
             };
 
             // Act

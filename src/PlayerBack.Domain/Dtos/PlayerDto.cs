@@ -4,7 +4,7 @@
 
     public class PlayerDto
     {
-        public int PlayerId { get; set; }
+        public string PlayerId { get; set; }
 
         public string FirstName { get; set; }
 

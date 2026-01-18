@@ -28,7 +28,7 @@ namespace PlayerBack.Api.Controllers
         }
 
         [HttpGet("Player/{id}", Name = "GetPlayerById")]
-        public async Task<IActionResult> GetPlayerByIdAsync(int id, CancellationToken cancellationToken)
+        public async Task<IActionResult> GetPlayerByIdAsync(string id, CancellationToken cancellationToken)
         {
             var result = await playerService.GetPlayerByIdAsync(id, cancellationToken);
 

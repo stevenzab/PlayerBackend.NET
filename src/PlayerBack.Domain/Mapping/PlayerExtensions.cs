@@ -11,7 +11,7 @@ namespace PlayerBack.Domain.Mapping
 
             return new PlayerDto
             {
-                PlayerId = source.PlayerId,
+                PlayerId = source.Id,
                 FirstName = source.FirstName,
                 LastName = source.LastName,
                 ShortName = source.ShortName,

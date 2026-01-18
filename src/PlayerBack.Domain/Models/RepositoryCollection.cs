@@ -7,7 +7,7 @@ namespace PlayerBack.Domain.Models
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
+        public string Id { get; set; }
 
         public DateTime Created { get; set; } = DateTime.Now;
         public DateTime Updated { get; set; }

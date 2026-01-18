@@ -2,8 +2,6 @@
 {
     public class Player : RepositoryCollection
     {
-        public int PlayerId { get; set; }
-
         public string FirstName { get; set; }
 
         public string LastName { get; set; }

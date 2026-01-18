@@ -44,7 +44,7 @@ namespace PlayerBack.Infrastructure.UnitTests.Seeding
         {
             var collection = _database.GetCollection<Player>("Player");
 
-            await collection.InsertOneAsync(new Player { PlayerId = 1 });
+            await collection.InsertOneAsync(new Player { Id = "1" });
 
             var repository = new BaseRepository(_database);
             var seeder = new PlayerDbSeeder(repository);
@@ -97,13 +97,13 @@ namespace PlayerBack.Infrastructure.UnitTests.Seeding
             var addedPlayers = new List<Player>();
 
             mockRepo
-                .Setup(r => r.AddAsync(It.Is<Player>(p => p.PlayerId == 1 && p.FirstName == "Alice" && p.Country.Code == "USA")))
+                .Setup(r => r.AddAsync(It.Is<Player>(p => p.Id == "1" && p.FirstName == "Alice" && p.Country.Code == "USA")))
                 .Callback<Player>(p => addedPlayers.Add(p))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
 
             mockRepo
-                .Setup(r => r.AddAsync(It.Is<Player>(p => p.PlayerId == 2 && p.FirstName == "Bob" && p.Country.Code == "FRA")))
+                .Setup(r => r.AddAsync(It.Is<Player>(p => p.Id == "2" && p.FirstName == "Bob" && p.Country.Code == "FRA")))
                 .Callback<Player>(p => addedPlayers.Add(p))
                 .Returns(Task.CompletedTask)
                 .Verifiable();
@@ -121,7 +121,7 @@ namespace PlayerBack.Infrastructure.UnitTests.Seeding
             Assert.IsTrue(File.Exists(seedPath));
             Assert.AreEqual(2, addedPlayers.Count, "Expected exactly two players to be added.");
 
-            var alice = addedPlayers.SingleOrDefault(p => p.PlayerId == 1);
+            var alice = addedPlayers.SingleOrDefault(p => p.Id == "1");
             Assert.IsNotNull(alice);
             Assert.AreEqual("Alice", alice.FirstName);
             Assert.IsNotNull(alice.Country);
@@ -130,7 +130,7 @@ namespace PlayerBack.Infrastructure.UnitTests.Seeding
             Assert.AreEqual(170, alice.Data.Height);
             Assert.AreEqual(60, alice.Data.Weight);
 
-            var bob = addedPlayers.SingleOrDefault(p => p.PlayerId == 2);
+            var bob = addedPlayers.SingleOrDefault(p => p.Id == "2");
             Assert.IsNotNull(bob);
             Assert.AreEqual("Bob", bob.FirstName);
             Assert.IsNotNull(bob.Country);

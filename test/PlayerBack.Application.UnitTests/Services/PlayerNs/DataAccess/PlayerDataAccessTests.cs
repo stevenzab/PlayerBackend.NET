@@ -48,9 +48,9 @@ namespace PlayerBack.Application.UnitTests.Services.PlayerNs.DataAccess
             // Arrange
             var players = new List<Player>
             {
-                new Player { PlayerId = 1, FirstName = "A", Data = new PlayerData { Rank = 5 } },
-                new Player { PlayerId = 2, FirstName = "B", Data = new PlayerData { Rank = 2 } },
-                new Player { PlayerId = 3, FirstName = "C", Data = new PlayerData { Rank = 10 } }
+                new Player { FirstName = "A", Data = new PlayerData { Rank = 5 } },
+                new Player { FirstName = "B", Data = new PlayerData { Rank = 2 } },
+                new Player { FirstName = "C", Data = new PlayerData { Rank = 10 } }
             };
 
             var collection = database.GetCollection<Player>(typeof(Player).Name);
@@ -64,9 +64,9 @@ namespace PlayerBack.Application.UnitTests.Services.PlayerNs.DataAccess
             // Assert
             Assert.IsNotNull(result);
             Assert.AreEqual(3, result.Count);
-            Assert.AreEqual(2, result[0].PlayerId);
-            Assert.AreEqual(1, result[1].PlayerId);
-            Assert.AreEqual(3, result[2].PlayerId);
+            Assert.AreEqual(2, result[0].Data.Rank);
+            Assert.AreEqual(5, result[1].Data.Rank);
+            Assert.AreEqual(10, result[2].Data.Rank);
         }
 
         [TestMethod]
@@ -75,32 +75,31 @@ namespace PlayerBack.Application.UnitTests.Services.PlayerNs.DataAccess
             // Arrange
             var players = new List<Player>
             {
-                new Player { PlayerId = 1, FirstName = "A", Data = new PlayerData { Rank = 1 } },
-                new Player { PlayerId = 5, FirstName = "Target", Data = new PlayerData { Rank = 2 } }
+                new Player { FirstName = "A", Data = new PlayerData { Rank = 1 } },
+                new Player { FirstName = "Target", Data = new PlayerData { Rank = 2 } }
             };
 
             var collection = database.GetCollection<Player>(typeof(Player).Name);
             await collection.InsertManyAsync(players);
 
+            // find the inserted target id
+            var insertedTarget = await collection.Find(p => p.FirstName == "Target").FirstOrDefaultAsync();
+            Assert.IsNotNull(insertedTarget);
+
             var playerDataAccess = CreatePlayerDataAccess();
 
             // Act
-            var result = await playerDataAccess.GetPlayerByIdAsync(5, CancellationToken.None);
+            var result = await playerDataAccess.GetPlayerByIdAsync(insertedTarget.Id, CancellationToken.None);
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(1, result.Count);
-            Assert.AreEqual("Target", result.First().FirstName);
+            Assert.AreEqual("Target", result.FirstName);
         }
 
         [TestMethod]
         public async Task CreatePlayerAsync_AssignsIdAndPersistsPlayerAsync()
         {
             // Arrange
-            var counters = database.GetCollection<BsonDocument>("counters");
-            var initial = new BsonDocument { { "_id", "playerId" }, { "sequence_value", 41 } };
-            await counters.InsertOneAsync(initial);
-
             var player = new Player { FirstName = "New", LastName = "Player", Data = new PlayerData { Rank = 99 } };
 
             var playerDataAccess = CreatePlayerDataAccess();
@@ -109,10 +108,10 @@ namespace PlayerBack.Application.UnitTests.Services.PlayerNs.DataAccess
             await playerDataAccess.CreatePlayerAsync(player);
 
             // Assert
-            Assert.AreEqual(42, player.PlayerId);
+            Assert.IsFalse(string.IsNullOrWhiteSpace(player.Id));
 
             var playersCollection = database.GetCollection<Player>(typeof(Player).Name);
-            var persisted = await playersCollection.Find(p => p.PlayerId == 42).FirstOrDefaultAsync();
+            var persisted = await playersCollection.Find(p => p.Id == player.Id).FirstOrDefaultAsync();
             Assert.IsNotNull(persisted);
             Assert.AreEqual("New", persisted.FirstName);
         }

@@ -41,7 +41,6 @@ namespace PlayerBack.Infrastructure.Seeding
             {
                 var player = new Player
                 {
-                    PlayerId = playerData.Id,
                     FirstName = playerData.Firstname ?? string.Empty,
                     LastName = playerData.Lastname ?? string.Empty,
                     ShortName = playerData.Shortname ?? string.Empty,

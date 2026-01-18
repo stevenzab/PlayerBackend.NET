@@ -29,8 +29,8 @@ namespace PlayerBack.Api.UnitTests.Controllers
             //Arrange
             var players = new List<PlayerDto>
             {
-                new PlayerDto { PlayerId = 1, FirstName = "Player1" },
-                new PlayerDto { PlayerId = 2, FirstName = "Player2" }
+                new PlayerDto { PlayerId = "1", FirstName = "Player1" },
+                new PlayerDto { PlayerId = "2", FirstName = "Player2" }
             };
 
             playerServiceMock
@@ -55,14 +55,14 @@ namespace PlayerBack.Api.UnitTests.Controllers
         public async Task GetPlayerByIdAsync_ReturnsOk_WhenPlayerExist()
         {
             // Arrange
-            var expected = new PlayerDto { PlayerId = 52, FirstName = "Existing" };
+            var expected = new PlayerDto { PlayerId = "52", FirstName = "Existing" };
 
             playerServiceMock
-                .Setup(s => s.GetPlayerByIdAsync(52, It.IsAny<CancellationToken>()))
+                .Setup(s => s.GetPlayerByIdAsync("52", It.IsAny<CancellationToken>()))
                 .ReturnsAsync(expected);
 
             // Act
-            var result = await controller.GetPlayerByIdAsync(52, CancellationToken.None);
+            var result = await controller.GetPlayerByIdAsync("52", CancellationToken.None);
 
             // Assert
             Assert.IsNotNull(result);
@@ -82,7 +82,7 @@ namespace PlayerBack.Api.UnitTests.Controllers
             // Arrange
             var player = new PlayerDto
             {
-                PlayerId = 42,
+                PlayerId = "42",
                 FirstName = "New",
                 LastName = "Player",
                 Country = new CountryDto { Code = "ESP", Picture = string.Empty },

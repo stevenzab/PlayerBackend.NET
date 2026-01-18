@@ -42,17 +42,15 @@ namespace PlayerBack.Application.Services.PlayerNs.DataAccess
 
         public async Task CreatePlayerAsync(Player player)
         {
-            player.PlayerId = await GetNextPlayerIdAsync();
             await baseRepository.AddAsync(player);
-            
         }
 
-        public async Task<IList<Player>> GetPlayerByIdAsync(int id, CancellationToken cancellationToken)
+        public async Task<Player> GetPlayerByIdAsync(string id, CancellationToken cancellationToken)
         {
             return await baseRepository
-                .AsQueryable<Player>()
-                .Where(p => p.PlayerId == id)
-                .ToListAsync(cancellationToken);
+                .GetCollection<Player>(typeof(Player).Name)
+                .Find(p => p.Id == id)
+                .FirstOrDefaultAsync(cancellationToken);
         }
     }
 }
